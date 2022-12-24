@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+  <head>
+    <title>FinanceIO</title>
+  </head>
+  <body>
+    <header>
+      <h1>FinanceIO</h1>
+      {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}">Log out</a>
+      {% else %}
+        <a href="{% url 'login' %}">Log in</a>
+        <a href="{% url 'register' %}">Register</a>
+      {% endif %}
+    </header>
+    <main>
+      {% block content %}{% endblock %}
+    </main>
+    <footer>
+      Copyright {{ year }}
+    </footer>
+  </body>
+</html>
