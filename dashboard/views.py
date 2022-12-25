@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from django.urls.resolvers import URLPattern
+from django.template import loader
 
 def dashboard(request):
     if request.user.is_authenticated:
-        return redirect('login')
+        return render(request, 'dashboard.html')
     else:
-        return render(request, "dashboard.html", {"message: Success!"})
+        return redirect('accounts:login')
 

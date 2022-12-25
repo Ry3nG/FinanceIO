@@ -1,44 +1,43 @@
+# accounts/views.py
+
 from django.shortcuts import render, redirect
-from .forms import CustomUserCreationForm, LoginForm
-from .models import User
 from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
+from django.contrib.auth.forms import AuthenticationForm
+from .forms import NewUserForm
 
 def register(request):
     if request.method == "POST":
-        form = CustomUserCreationForm(request.POST)
+        form = NewUserForm(request.POST)
         if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get("username")
-            password = form.cleaned_data.get("password1")
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                print("Success in register")
-                login(request, user)
-                return redirect("dashboard")
+            user = form.save()
+            login(request, user)
+            messages.success(request, "Registration successful.")
+            return redirect("/")
+        messages.error(request, "Unsuccessful registration. Invalid information.")
     else:
-        form = CustomUserCreationForm()
+        form = NewUserForm()
     return render(request, "register.html", {"form": form})
 
 
 def login_view(request):
-    if request.user.is_authenticated:
-        return redirect("dashboard")
-    else:
-        form = LoginForm(request.POST or None)
-        context = {"form": form}
+    if request.method == "POST":
+        form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
             username = form.cleaned_data.get("username")
             password = form.cleaned_data.get("password")
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect("dashboard")
+                messages.info(request, f"You are now logged in as {username}.")
+                return redirect("/")
             else:
-                print("Error1")
+                messages.error(request, "Invalid username or password.")
         else:
-            print("Error2")
-    return render(request, "login.html", context)
+            messages.error(request, "Invalid username or password.")
+    form = AuthenticationForm()
+    return render(request, "login.html", {"form": form})
 
 def logout_view(request):
     logout(request)
-    return redirect("login")
+    return redirect("/accounts/login/")
