@@ -3,8 +3,9 @@ from django.urls.resolvers import URLPattern
 from django.template import loader
 
 def dashboard(request):
-    if request.user.is_authenticated:
-        return render(request, 'dashboard.html')
+    if not request.user.is_authenticated:
+        return redirect("/accounts/login/")
     else:
-        return redirect('accounts:login')
+        template = loader.get_template("dashboard.html")
+    return render(request, "dashboard.html")
 

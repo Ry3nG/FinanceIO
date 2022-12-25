@@ -1,11 +1,25 @@
-{% extends 'base.html' %}
+{% extends 'header.html' %}
 
-{% block content %}
-  <h1>Log in</h1>
-  <form method="post">
+{% block content %}      
+
+{% load crispy_forms_tags %}
+
+<!--Login--> 
+<div class="container py-5">
+  <h1>Login</h1>
+  {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+  {% endif %}
+  <form method="POST">
     {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Log in">
+    {{ form|crispy }}
+    <button class="btn btn-primary" type="submit">Login</button>
   </form>
-  <p>Don't have an account yet? <a href="{% url 'accounts:register' %}">Sign up</a></p>
+  <p class="text-center">Don't have an account? <a href="{% url 'accounts:register' %}">Create an account</a>.</p>
+</div>
+
 {% endblock %}

@@ -13,7 +13,7 @@ def register(request):
             user = form.save()
             login(request, user)
             messages.success(request, "Registration successful.")
-            return redirect("/")
+            return redirect("dashboard:dashboard")  # Redirect to the dashboard page after successful registration
         messages.error(request, "Unsuccessful registration. Invalid information.")
     else:
         form = NewUserForm()
@@ -30,7 +30,7 @@ def login_view(request):
             if user is not None:
                 login(request, user)
                 messages.info(request, f"You are now logged in as {username}.")
-                return redirect("/")
+                return redirect("/dashboard/")
             else:
                 messages.error(request, "Invalid username or password.")
         else:
