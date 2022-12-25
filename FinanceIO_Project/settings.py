@@ -38,8 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "crispy_forms",
-    "accounts", # app name
-    "dashboard", # app name,
+    "FinanceIO_App",
 ]
 
 CRISPY_TEMMPLATE_PACK = "bootstrap4"
@@ -126,3 +125,5 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+LOGIN_REDIRECT_URL = "dashboard"
